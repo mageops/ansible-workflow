@@ -1,0 +1,9 @@
+- import_playbook: site.common.group-current-hosts.yml
+
+- hosts: app:&current
+  tasks:
+    - name: Restore DB from EFS backup
+      shell: |-
+        /usr/local/bin/magerun db:import --compression gzip {{ efs_root_mountpoint }}/{{mageops_project}}-restore.sql.gz
+      args:
+        chdir: /var/www/magento/current
